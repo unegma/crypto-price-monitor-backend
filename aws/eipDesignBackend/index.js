@@ -3,13 +3,13 @@ const {
   AWS_LAMBDA_FUNCTION_NAME = 'Unegma_PriceMonitor',
   // AWS_TIMEOUT_THRESHOLD
   SLACK_ERROR_LOG, // NEED ENVIRONMENT VARIABLES FOR THOSE USED IN IMPORTS
-  SLACK_EIPDESIGN_MESSAGES,
+  // SLACK_EIPDESIGN_MESSAGES,
 } = process.env;
 
 const { AWSUtilities } = require('@unegma/aws-utilities');
 const { SlackErrorLogger, SlackLogger } = require('@unegma/logger');
 const slackErrorLogger = new SlackErrorLogger(SLACK_ERROR_LOG);
-const slackMessageLogger = new SlackLogger(SLACK_EIPDESIGN_MESSAGES);
+// const slackMessageLogger = new SlackLogger(SLACK_EIPDESIGN_MESSAGES);
 const awsUtilities = new AWSUtilities(AWS_REGION, SLACK_ERROR_LOG);
 
 /**
@@ -27,7 +27,7 @@ exports.handler = async (event, context) => {
     console.log('here');
     console.log(`The message: ${message}`);
 
-    await slackMessageLogger.log('Unegma_PriceMonitor', JSON.stringify(event.body));
+    // await slackMessageLogger.log('Unegma_PriceMonitor', JSON.stringify(event.body));
 
   } catch(error) {
     message = error.message;

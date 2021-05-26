@@ -33,7 +33,7 @@ exports.handler = async (event, context) => {
     console.log(`Data: ${JSON.stringify(data)}`);
 
     // await slackMessageLogger.log('Unegma_PriceMonitor', JSON.stringify(event.body));
-    // dbUtilities.updateInDB('Unegma_PriceMonitor', {event.})
+    await dbUtilities.updateInDB('Unegma_PriceMonitor', {id: 1, data: data});
 
 
   } catch(error) {

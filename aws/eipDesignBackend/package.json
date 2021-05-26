@@ -1,6 +1,6 @@
 {
   "name": "crypto-price-monitor-backend",
-  "version": "1.12.0",
+  "version": "1.13.0",
   "main": "index.js",
   "scripts": {
     "test": "mocha tests/index.spec.js",

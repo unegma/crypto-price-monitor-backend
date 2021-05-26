@@ -6,11 +6,12 @@ const {
   // SLACK_EIPDESIGN_MESSAGES,
 } = process.env;
 
-const { AWSUtilities } = require('@unegma/aws-utilities');
+const { AWSUtilities, DBUtilities } = require('@unegma/aws-utilities');
 const { SlackErrorLogger, SlackLogger } = require('@unegma/logger');
 const slackErrorLogger = new SlackErrorLogger(SLACK_ERROR_LOG);
 // const slackMessageLogger = new SlackLogger(SLACK_EIPDESIGN_MESSAGES);
 const awsUtilities = new AWSUtilities(AWS_REGION, SLACK_ERROR_LOG);
+const dbUtilities = new DBUtilities(AWS_REGION, SLACK_ERROR_LOG);
 
 /**
  *
@@ -21,13 +22,19 @@ const awsUtilities = new AWSUtilities(AWS_REGION, SLACK_ERROR_LOG);
 exports.handler = async (event, context) => {
   console.log(`# Beginning ${AWS_LAMBDA_FUNCTION_NAME}`); console.log(JSON.stringify(event)); console.log(context);
 
-  let message = "# Success";
+  let message = "Success";
   try {
 
     console.log('here');
     console.log(`The message: ${message}`);
+    console.log(event);
+
+    let data = JSON.parse(event.body);
+    console.log(`Data: ${JSON.stringify(data)}`);
 
     // await slackMessageLogger.log('Unegma_PriceMonitor', JSON.stringify(event.body));
+    // dbUtilities.updateInDB('Unegma_PriceMonitor', {event.})
+
 
   } catch(error) {
     message = error.message;

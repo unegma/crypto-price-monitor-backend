@@ -1,6 +1,6 @@
 const {
   AWS_REGION,
-  AWS_LAMBDA_FUNCTION_NAME = 'Unegma_PriceMonitor',
+  AWS_LAMBDA_FUNCTION_NAME = 'Unegma_PriceMonitor', // todo will need to rename this as part of a project (along with the cloudwatch backend function)
   // AWS_TIMEOUT_THRESHOLD
   SLACK_ERROR_LOG, // NEED ENVIRONMENT VARIABLES FOR THOSE USED IN IMPORTS
   // SLACK_EIPDESIGN_MESSAGES,
@@ -10,10 +10,11 @@ const { AWSUtilities, DBUtilities } = require('@unegma/aws-utilities');
 const { SlackErrorLogger, SlackLogger } = require('@unegma/logger');
 const slackErrorLogger = new SlackErrorLogger(SLACK_ERROR_LOG);
 // const slackMessageLogger = new SlackLogger(SLACK_EIPDESIGN_MESSAGES);
-const awsUtilities = new AWSUtilities(AWS_REGION, SLACK_ERROR_LOG);
+// const awsUtilities = new AWSUtilities(AWS_REGION, SLACK_ERROR_LOG);
 const dbUtilities = new DBUtilities(AWS_REGION, SLACK_ERROR_LOG);
 
 /**
+ * Handler
  *
  * @param event
  * @param context
@@ -29,12 +30,21 @@ exports.handler = async (event, context) => {
     console.log(`The message: ${message}`);
     console.log(event);
 
-    let data = JSON.parse(event.body);
-    console.log(`Data: ${JSON.stringify(data)}`);
+    switch (event.httpMethod.toLowerCase()) {
+      case 'post':
 
-    // await slackMessageLogger.log('Unegma_PriceMonitor', JSON.stringify(event.body));
-    await dbUtilities.updateInDB('Unegma_PriceMonitor', {id: 1, data: data});
+        let data = JSON.parse(event.body);
+        console.log(`Data: ${JSON.stringify(data)}`);
+        await dbUtilities.updateInDB('Unegma_PriceMonitor', {id: 1, data: data});
 
+        break;
+      case 'get':
+
+        message = await dbUtilities.getFromDB('Unegma_PriceMonitor', 'id', null, 1);
+        console.log(`Data: ${JSON.stringify(message)}`);
+
+        break;
+    }
 
   } catch(error) {
     message = error.message;

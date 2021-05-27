@@ -41,6 +41,7 @@ exports.handler = async (event, context) => {
       case 'get':
 
         message = await dbUtilities.getFromDB('Unegma_PriceMonitor', 'id', null, 1);
+        message = JSON.stringify(message.data); // strip out the id
         console.log(`Data: ${JSON.stringify(message)}`);
 
         break;
